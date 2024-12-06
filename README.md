@@ -10,3 +10,48 @@ be used for cache storage and [Distributed Output Caching](https://learn.microso
 [HybridCache](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid?view=aspnetcore-9.0) library currently in preview mode. 
 Prior to this, developers would have to invest in a [Redis Cache](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output?view=aspnetcore-9.0#redis-cache) to provide consistent shared access between server nodes in a distributed architecture. 
 The new HybridCache looks to bridge the gap between IMemoryCache and RedisCache.
+
+## Usage
+Add your IDistriubtedCache service: 
+  ```csharp
+builder
+      .Services.AddDistributedSqlServerCache(options =>
+      {
+          options.ConnectionString = builder.Configuration.GetValue<string>(CacheSettings.ConnectionString);
+          options.SchemaName = CacheSettings.SchemaName;
+          options.TableName = CacheSettings.TableName;
+      })
+  ```
+
+Add HybridCache (preview warning):
+  ```csharp
+  #pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+builder
+    .Services.AddHybridCache(options =>
+{
+    options.DefaultEntryOptions = new Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions() { Flags = Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryFlags.DisableLocalCache };
+});
+#pragma warning restore EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
+  ```
+
+Add HybridOutputCache:
+  ```csharp
+builder.Services.AddHybridOutputCache(options =>
+{
+    options.AddBasePolicy(builder =>
+        builder.Expire(TimeSpan.FromMinutes(10)));
+
+});
+  ```
+
+Use OutputCache as you normally would after you build your services:
+  ```csharp
+app.UseOutputCache();
+  ```
+
+Finally attach the CacheOutput() to your endpoint:
+ ```csharp
+  app.MapRemoteBffApiEndpoint("/catalog", builder.Configuration.GetValue<string>(HttpClientBaseAddresses.CatalogApi) + "/api/catalog")
+  .CacheOutput();
+ ```
