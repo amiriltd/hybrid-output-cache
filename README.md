@@ -17,7 +17,7 @@ The new HybridCache looks to bridge the gap between IMemoryCache and RedisCache.
 > In the meantime, add a folder to your project and copy the three files in the repo: HybridOutputCacheOptionsSetup.cs, HybridOutputCacheStore.cs, and OutputHybridCacheServiceExtensions.cs 
 > Other warnings from Microsoft:
 > [HybridCache](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid?view=aspnetcore-9.0) is currently still in preview but will be fully released after .NET 9.0 in a future minor release of .NET Extensions.
-
+> [Remove Cache By Tag](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid?view=aspnetcore-9.0#remove-cache-entries-by-tag)
 
 ## Usage
 Add your IDistriubtedCache service: 
