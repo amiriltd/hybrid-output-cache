@@ -11,6 +11,14 @@ be used for cache storage and [Distributed Output Caching](https://learn.microso
 Prior to this, developers would have to invest in a [Redis Cache](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/output?view=aspnetcore-9.0#redis-cache) to provide consistent shared access between server nodes in a distributed architecture. 
 The new HybridCache looks to bridge the gap between IMemoryCache and RedisCache.
 
+## Still In Preview Mode!
+> [!IMPORTANT]
+> This project is based on packages that are in evaluation therefore we will not be creating an official nuget package.  
+> In the meantime, add a folder to your project and copy the three files in the repo: HybridOutputCacheOptionsSetup.cs, HybridOutputCacheStore.cs, and OutputHybridCacheServiceExtensions.cs 
+> Other warnings from Microsoft:
+> [HybridCache](https://learn.microsoft.com/en-us/aspnet/core/performance/caching/hybrid?view=aspnetcore-9.0) is currently still in preview but will be fully released after .NET 9.0 in a future minor release of .NET Extensions.
+
+
 ## Usage
 Add your IDistriubtedCache service: 
   ```csharp
